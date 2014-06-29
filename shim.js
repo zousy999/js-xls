@@ -1,3 +1,4 @@
+// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
 if (!Object.keys) {
   Object.keys = (function () {
     var hasOwnProperty = Object.prototype.hasOwnProperty,
@@ -32,6 +33,7 @@ if (!Object.keys) {
   })();
 }
 
+// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 if (!Array.prototype.filter)
 {
   Array.prototype.filter = function(fun /*, thisp */)
@@ -62,10 +64,33 @@ if (!Array.prototype.filter)
   };
 }
 
-if ( !Array.prototype.forEach ) {
-  Array.prototype.forEach = function(fn, scope) {
-    for(var i = 0, len = this.length; i < len; ++i) {
-      fn.call(scope, this[i], i, this);
+// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, '');
+  };
+}
+
+// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+if (!Array.prototype.forEach)
+{
+  Array.prototype.forEach = function(fun /*, thisArg */)
+  {
+    "use strict";
+
+    if (this === void 0 || this === null)
+      throw new TypeError();
+
+    var t = Object(this);
+    var len = t.length >>> 0;
+    if (typeof fun !== "function")
+      throw new TypeError();
+
+    var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
+    for (var i = 0; i < len; i++)
+    {
+      if (i in t)
+        fun.call(thisArg, t[i], i, t);
     }
   };
 }
@@ -144,8 +169,61 @@ if (!Array.prototype.map) {
   };      
 }
 
+// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
+if (!Array.prototype.indexOf) {
+  Array.prototype.indexOf = function (searchElement, fromIndex) {
+    if ( this === undefined || this === null ) {
+      throw new TypeError( '"this" is null or not defined' );
+    }
+
+    var length = this.length >>> 0; // Hack to convert object.length to a UInt32
+
+    fromIndex = +fromIndex || 0;
+
+    if (Math.abs(fromIndex) === Infinity) {
+      fromIndex = 0;
+    }
+
+    if (fromIndex < 0) {
+      fromIndex += length;
+      if (fromIndex < 0) {
+        fromIndex = 0;
+      }
+    }
+
+    for (;fromIndex < length; fromIndex++) {
+      if (this[fromIndex] === searchElement) {
+        return fromIndex;
+      }
+    }
+
+    return -1;
+  };
+}
 // Based on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
 
+// https://github.com/ttaubert/node-arraybuffer-slice
+// (c) 2013 Tim Taubert <tim@timtaubert.de>
+// arraybuffer-slice may be freely distributed under the MIT license.
+
+"use strict";
+
+if (typeof ArrayBuffer !== 'undefined' && !ArrayBuffer.prototype.slice) {
+  ArrayBuffer.prototype.slice = function (begin, end) {
+    begin = (begin|0) || 0;
+    var num = this.byteLength;
+    end = end === (void 0) ? num : (end|0);
+
+    // Handle negative values.
+    if (begin < 0) begin += num;
+    if (end < 0) end += num;
+
+    if (num === 0 || begin >= num || begin >= end) {
+      return new ArrayBuffer(0);
+    }
+
+    var length = Math.min(num - begin, end - begin);
+    var target = new ArrayBuffer(length);
 if (! Array.isArray) {
     Array.isArray = function(obj) {
         return Object.prototype.toString.call(obj) === "[object Array]";

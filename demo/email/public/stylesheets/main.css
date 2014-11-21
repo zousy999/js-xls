@@ -1,0 +1,34 @@
+#user-list{
+	list-style: none;
+	float: right;
+	margin-right: 30px;
+}
+#user-list li{
+ 	display: inline-block;
+ 	margin-left: 12px;
+}
+#mail{
+	width: 800px;
+	margin: 20px auto;
+}
+
+#mail label{
+	display: left;
+	width: 120px;
+	vertical-align: top;
+}
+#mail>div{
+	margin-top: 5px;
+	line-height: 24px;
+}
+.pos-rel{
+	position: relative;
+}
+#receiver{
+	display: inline-block;
+	width: 580px;
+}
+#mode-sel{
+	display: inline-block;
+	width: 100px;
+}
